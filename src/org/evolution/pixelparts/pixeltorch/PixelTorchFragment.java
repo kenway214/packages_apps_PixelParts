@@ -6,27 +6,42 @@
 package org.evolution.pixelparts.pixeltorch;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import androidx.preference.Preference.OnPreferenceClickListener;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragment;
 import androidx.preference.PreferenceManager;
 
+import org.evolution.pixelparts.Constants;
 import org.evolution.pixelparts.R;
 import org.evolution.pixelparts.utils.TileUtils;
 
 public class PixelTorchFragment extends PreferenceFragment
         implements Preference.OnPreferenceChangeListener {
 
+    private Preference mButtonServicePreference;
+
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.pixel_torch);
         setHasOptionsMenu(true);
+
+        mButtonServicePreference = findPreference(Constants.KEY_PIXEL_TORCH_BUTTON_SERVICE);
+        mButtonServicePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
+                return true;
+            }
+        });
     }
 
     @Override
